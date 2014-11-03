@@ -4,6 +4,8 @@
 # comments are for chumps
 import random
 
+import glob
+
 # Global Variables
 
 # Core of Game.
@@ -28,15 +30,26 @@ def core(x):
 
 class Board:
   """Represents a hanging man"""
+  BOARD_PIC_FILES = glob.glob('files/*.txt')
+  BOARD_PICS = []
   
   def __init__(self):
     self.progress = 0
+    for index in range(len(self.BOARD_PIC_FILES)):  
+      board_pic_file_name = self.BOARD_PIC_FILES[index]
+      board_pic_file = open(board_pic_file_name, 'r')
+      board_pic_file_contents = ''.join(board_pic_file.read())
+      self.BOARD_PICS.append(board_pic_file_contents)
+      board_pic_file.close() 
 
-  def draw():
-    print('drawme')
+  def draw(self):
+    return self.BOARD_PICS[self.progress]
 
   def state(self):
     return self.progress
 
   def increment(self):
-    self.progress += 1  
+    if (self.progress < len(self.BOARD_PIC_FILES) - 1):
+      self.progress += 1  
+
+
