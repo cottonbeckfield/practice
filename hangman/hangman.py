@@ -1,15 +1,26 @@
+#!/usr/bin/env python
+
+# Library/Functions
 import random
 
-# Create word list? / Variables
-# Allow Word list to be populated randomly. Pull in from file, perhaps?
-hangmanWords = ("story of the year")
-randomNumber = random.random.randint(0, len(hangmanWords) -1)
-# Draw board, wrong letters, guessed letters, etc.
+# Global Variables
 
-# Create board.
+# Core of Game.
+def core(x):
 
-# Create way to guess letters.
+	word = "givers" # Update to read random words from file.
+	usedLetters = ''
+	turns = 5
 
-# Game functionality.
+	while turns < 5:
+		guess = raw_input('Guess a Letter: ')
+		
+		if guess not in word:
+			usedLetters += "," + guess
+			print (o) # Should be game board, in creation.
+		# If not in word, increase turns count +
+		# update the board.
 
-# Main Function
+# How to update a line system? - - - - - (represnt words)
+
+# Draw board / Update Board Function
