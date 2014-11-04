@@ -1,7 +1,7 @@
 import unittest
-from hangman import Board
+from hangman import Board, Word
 
-class HangmanBoard(unittest.TestCase):
+class HangmanBoardTest(unittest.TestCase):
   def setUp(self):
     self.hangman_board = Board()
 
@@ -31,5 +31,35 @@ class HangmanBoard(unittest.TestCase):
     board.increment()
     board.draw()
 
-suite = unittest.TestLoader().loadTestsFromTestCase(HangmanBoard)
+class WordTest(unittest.TestCase):
+  def test_hide_content(self):
+    testWord = Word('bob is my friend')
+    self.assertEqual(testWord.hide_content(), '--- -- -- ------')
+
+  def test_guess_indexes(self):
+    testWord = Word('I was unable to add a aardvark')
+    self.assertEqual(testWord.find('a'), [3, 8, 16, 20, 22, 23, 27])
+
+  def test_no_hit(self):
+    testWord = Word('none of that here')
+    self.assertFalse(testWord.guess('s'))
+
+  def test_got_hit(self):
+    testWord = Word('all of that here')
+    self.assertTrue(testWord.guess('a'))
+
+  #def test_guess_and_replace(self):
+  #  testWord = Word('giblets')
+  #  testWord.guess('g')
+  #  self.assertEqual(testWord.user_facing, 'g------')
+  #  self.assertEqual(testWord.guesses, ['g'])
+
+  def test_guess_input_is_ok(self):
+    print ('')
+    # assert guess is not shite
+
+suite = unittest.TestLoader().loadTestsFromTestCase(HangmanBoardTest)
+unittest.TextTestRunner(verbosity=2).run(suite)
+
+suite = unittest.TestLoader().loadTestsFromTestCase(WordTest)
 unittest.TextTestRunner(verbosity=2).run(suite)

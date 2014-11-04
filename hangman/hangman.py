@@ -7,6 +7,7 @@ import random
 import glob
 
 # Global Variables
+# global variables!?  but... what if they change somewhere?
 
 # Core of Game.
 def core(x):
@@ -25,8 +26,49 @@ def core(x):
 		# update the board.
 
 # How to update a line system? - - - - - (represnt words)
+# represent words using a word representation...
+class Word:
+  def __init__(self, content):
+    self.__content = content
+    self.user_facing = self.hide_content()
+    self.guesses = []
 
+  def hide_content(self):
+    content = list(self.__content)
+
+    for index, character in enumerate(content):
+      if content[index] != ' ':
+        content[index] = '-'
+    
+    hidden = "".join(content)
+    return hidden
+
+  def find(self, guess_letter):
+    return [i for i, ltr in enumerate(self.__content) if ltr == guess_letter]
+
+  def guess(self, letter):
+    self.guesses.append(letter)
+    indexes = self.find(letter)
+    if indexes == []:
+      return False
+
+    for i in indexes:
+      print i
+      first_letter = self.user_facing[i]
+      print first_letter
+      #first_letter = self.__content[i]
+    return True
+    
+    
 # Draw board / Update Board Function
+class Hangman:
+  def __init__(self):
+    self.board = Board()
+    self.answer = Word('giblets')
+
+  def start(self):
+    print('start')
+         
 
 class Board:
   """Represents a hanging man"""
@@ -53,3 +95,4 @@ class Board:
       self.progress += 1  
 
 
+hangman = Hangman().start()

@@ -1,2 +1,5 @@
 # I love python
 *.pyc
+
+# But sometimes I don't close vim files
+*.sw*
