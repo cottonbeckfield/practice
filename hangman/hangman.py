@@ -59,14 +59,17 @@ class Hangman:
 
   def invalidUserGuess(self, guess):
     #duplicate guess
+    return self.duplicateGuess(guess) or self.notSingleLetter(guess)
+
+  def duplicateGuess(self, guess):
     if guess in self.guesses:
       print('You already guessed that')
       return True
-    # not single letter
+ 
+  def notSingleLetter(self, guess):
     if len(guess) != 1:
       print('Guess should be a single character')
       return True
-    return False
 
   def start(self):
     while not self.userHasWon:
