@@ -1,24 +1,10 @@
 #!/usr/bin/env python
 
-# Library/Functions
-# comments are for chumps
 import random
-
 import glob
 
-# Global Variables
-# global variables!?  but... what if they change somewhere?
-
-# Core of Game.
-def core(x):
-
-	word = "givers" # Update to read random words from file.
-	usedLetters = ''
-	turns = 5
-
-	
-# How to update a line system? - - - - - (represnt words)
 class Word:
+  """Represents the word that a user is trying to guess"""
   def __init__(self, content):
     self.__content = content
     self.user_facing = self.hide_content()
@@ -36,16 +22,23 @@ class Word:
   def find(self, guess_letter):
     return [i for i, ltr in enumerate(self.__content) if ltr == guess_letter]
 
+  def revealLettersForCharacters(self, arrayOfIndices):
+    for i in arrayOfIndices:
+      self.user_facing = self.replaceCharAtIndexWith(i, self.__content[i])
+
+  def replaceCharAtIndexWith(self, index, replacement):
+    return self.user_facing[:index] + replacement + self.user_facing[index:-1]
+
   def testGuess(self,guess):
     hits = self.find(guess)
     if len(hits) > 0:
-      # update the user_facingword
+      self.revealLettersForCharacters(hits)
       return True
     else:
       return False
  
-# Draw board / Update Board Function
 class Hangman:
+  """A class to represent the game and set up the board and word to guess"""
   def __init__(self):
     self.board = Board()
     self.answer = Word('giblets')
@@ -58,7 +51,6 @@ class Hangman:
     print(self.answer.user_facing)
 
   def invalidUserGuess(self, guess):
-    #duplicate guess
     return self.duplicateGuess(guess) or self.notSingleLetter(guess)
 
   def duplicateGuess(self, guess):
@@ -90,12 +82,6 @@ class Hangman:
       if self.board.hasLost:
         self.userHasLost = True
 	  
-	  #if guess not in word:
-	  #	usedLetters += "," + guess
-      # print (o) # Should be game board, in creation.
-	  # If not in word, increase turns count +
-	  # update the board.
-
   def guess(self, letter):
     self.guesses.append(letter)
     indexes = self.find(letter)
@@ -124,7 +110,7 @@ class Board:
     return self.BOARD_PICS[self.progress]
 
   def hasLost(self):
-    return self.progress >= len(self.BOARD_PIC_FILES)
+    return self.progress == len(self.BOARD_PIC_FILES - 1) 
 
   def increment(self):
     if (self.progress < len(self.BOARD_PIC_FILES) - 1):
