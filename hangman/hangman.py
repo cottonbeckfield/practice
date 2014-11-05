@@ -16,22 +16,12 @@ def core(x):
 	usedLetters = ''
 	turns = 5
 
-	while turns < 5:
-		guess = raw_input('Guess a Letter: ')
-		
-		if guess not in word:
-			usedLetters += "," + guess
-			print (o) # Should be game board, in creation.
-		# If not in word, increase turns count +
-		# update the board.
-
+	
 # How to update a line system? - - - - - (represnt words)
-# represent words using a word representation...
 class Word:
   def __init__(self, content):
     self.__content = content
     self.user_facing = self.hide_content()
-    self.guesses = []
 
   def hide_content(self):
     content = list(self.__content)
@@ -46,6 +36,63 @@ class Word:
   def find(self, guess_letter):
     return [i for i, ltr in enumerate(self.__content) if ltr == guess_letter]
 
+  def testGuess(self,guess):
+    hits = self.find(guess)
+    if len(hits) > 0:
+      # update the user_facingword
+      return True
+    else:
+      return False
+ 
+# Draw board / Update Board Function
+class Hangman:
+  def __init__(self):
+    self.board = Board()
+    self.answer = Word('giblets')
+    self.userHasWon = False
+    self.guesses = []
+
+  def printState(self):
+    print(self.board.draw())
+    print(self.guesses)
+    print(self.answer.user_facing)
+
+  def invalidUserGuess(self, guess):
+    #duplicate guess
+    if guess in self.guesses:
+      print('You already guessed that')
+      return True
+    # not single letter
+    if len(guess) != 1:
+      print('Guess should be a single character')
+      return True
+    return False
+
+  def start(self):
+    while not self.userHasWon:
+      guess = raw_input('Guess a Letter: ')
+      
+      if self.invalidUserGuess(guess):
+        continue 
+      self.guesses.append(guess)
+
+      if self.answer.testGuess(guess):
+        print(self.answer.user_facing)
+      else:      
+        self.board.increment()
+        print(self.answer.user_facing)
+
+      self.printState()
+
+      if self.board.hasLost:
+        self.userHasLost = True
+	  
+	  #if guess not in word:
+	  #	usedLetters += "," + guess
+      # print (o) # Should be game board, in creation.
+	  # If not in word, increase turns count +
+	  # update the board.
+
   def guess(self, letter):
     self.guesses.append(letter)
     indexes = self.find(letter)
@@ -53,22 +100,8 @@ class Word:
       return False
 
     for i in indexes:
-      print i
       first_letter = self.user_facing[i]
-      print first_letter
-      #first_letter = self.__content[i]
     return True
-    
-    
-# Draw board / Update Board Function
-class Hangman:
-  def __init__(self):
-    self.board = Board()
-    self.answer = Word('giblets')
-
-  def start(self):
-    print('start')
-         
 
 class Board:
   """Represents a hanging man"""
@@ -87,12 +120,11 @@ class Board:
   def draw(self):
     return self.BOARD_PICS[self.progress]
 
-  def state(self):
-    return self.progress
+  def hasLost(self):
+    return self.progress >= len(self.BOARD_PIC_FILES)
 
   def increment(self):
     if (self.progress < len(self.BOARD_PIC_FILES) - 1):
       self.progress += 1  
-
 
 hangman = Hangman().start()
