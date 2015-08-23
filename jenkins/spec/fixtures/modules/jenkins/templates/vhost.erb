@@ -1,0 +1,13 @@
+<VirtualHost *:80>
+        ServerName <%= @servername %>
+        DocumentRoot <%= @doc_root %>
+ 
+        ProxyPass / http://localhost:8080/
+        ProxyPassReverse / http://localhost:8080/
+        ProxyRequests Off
+        ProxyPreserveHost On
+        <Proxy http://localhost:8080/*>
+                Order deny,allow
+                Allow from all
+        </Proxy>
+</VirtualHost>
