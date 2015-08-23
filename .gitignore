@@ -1,5 +1,6 @@
 # I love python
 *.pyc
+*.DS_Store
 
 # But sometimes I don't close vim files
 *.sw*
