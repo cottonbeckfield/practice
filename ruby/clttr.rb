@@ -1,4 +1,7 @@
 #!/usr/bin/env ruby
+# I think this was an "exercise" from somewhere.
+# It's just using input + get to ask a question
+# and return a message if interest is high.
 
 def cover_message()
   puts "
