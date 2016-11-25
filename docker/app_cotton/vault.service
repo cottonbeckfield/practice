@@ -1,0 +1,12 @@
+[Unit]
+Description=vault dev server
+Requires=network-online.target
+After=network-online.target consul.service
+
+[Service]
+USER=vault
+Environment=VAULT_ADDR=http://127.0.0.1:8200
+ExecStart=/bin/sh -c '/home/vault/vault server -dev > /home/vault/vault.info 2>&1'
+
+[Install]
+WantedBy=multi-user.target
